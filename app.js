@@ -1,0 +1,98 @@
+require('dotenv').config();
+
+const express = require('express'),
+  path = require('path'),
+  favicon = require('serve-favicon'),
+  logger = require('morgan'),
+  cookieParser = require('cookie-parser'),
+  nunjucks = require('nunjucks'),
+  passport = require('passport'),
+  session = require('express-session'),
+  join = require('path').join,
+  Auth0Strategy = require('passport-auth0-openidconnect').Strategy,
+  routes = require('./routes/index');
+
+const app = express();
+
+
+// Passport setup
+const strategy = new Auth0Strategy({
+    domain:       process.env.AUTH0_DOMAIN,
+    clientID:     process.env.AUTH0_CLIENT_ID,
+    clientSecret: process.env.AUTH0_CLIENT_SECRET,
+    callbackURL:  process.env.AUTH0_CALLBACK_URL ||
+                  `http://localhost:${process.env.PORT}/callback`,
+    passReqToCallback: true
+  },
+  function (req, issuer, audience, profile, accessToken,
+            refreshToken, params, callback) {
+    req.session.id_token = params.id_token;
+    return callback(null, profile._json);
+  });
+passport.use(strategy);
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+// Nunjucks setup
+nunjucks.configure(join(__dirname, 'templates'), {
+    autoescape: true,
+    express: app
+});
+app.set('view engine', 'nunjucks');
+
+app.use(cookieParser());
+app.use(session({
+  secret: process.env.COOKIE_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {maxAge: 30 * 60 * 1000} // 30 minutes
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(logger('dev'));
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+// Routes setup
+app.use('/', routes);
+
+// catch 404 and forward to error handler
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.render('error.html', {
+      message: err.message,
+      error: err
+    });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.render('error.html', {
+    message: err.message,
+    error: {}
+  });
+});
+
+
+module.exports = app;
