@@ -13,4 +13,5 @@ ADD . ./
 
 EXPOSE 3000
 
-CMD ["/usr/local/bin/npm", "start"]
+ENTRYPOINT ["/usr/local/bin/node"]
+CMD ["bin/www"]
