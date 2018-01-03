@@ -1,34 +1,38 @@
 require('dotenv').config();
 
-const express = require('express'),
-  path = require('path'),
-  favicon = require('serve-favicon'),
-  logger = require('morgan'),
-  cookieParser = require('cookie-parser'),
-  nunjucks = require('nunjucks'),
-  passport = require('passport'),
-  session = require('express-session'),
-  join = require('path').join,
-  Auth0Strategy = require('passport-auth0-openidconnect').Strategy,
-  routes = require('./routes/index');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const nunjucks = require('nunjucks');
+const passport = require('passport');
+const session = require('express-session');
+const { join } = require('path');
+const Auth0Strategy = require('passport-auth0-openidconnect').Strategy;
+const routes = require('./routes/index');
 
 const app = express();
 
 
 // Passport setup
-const strategy = new Auth0Strategy({
-    domain:       process.env.AUTH0_DOMAIN,
-    clientID:     process.env.AUTH0_CLIENT_ID,
+const strategy = new Auth0Strategy(
+  {
+    domain: process.env.AUTH0_DOMAIN,
+    clientID: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
-    callbackURL:  process.env.AUTH0_CALLBACK_URL ||
+    callbackURL: process.env.AUTH0_CALLBACK_URL ||
                   `http://localhost:${process.env.PORT}/callback`,
-    passReqToCallback: true
+    passReqToCallback: true,
   },
-  function (req, issuer, audience, profile, accessToken,
-            refreshToken, params, callback) {
+  ((
+    req, issuer, audience, profile, accessToken,
+    refreshToken, params, callback,
+  ) => {
     req.session.id_token = params.id_token;
     return callback(null, profile._json);
-  });
+  }),
+);
 passport.use(strategy);
 
 passport.serializeUser((user, done) => {
@@ -41,8 +45,8 @@ passport.deserializeUser((user, done) => {
 
 // Nunjucks setup
 nunjucks.configure(join(__dirname, 'templates'), {
-    autoescape: true,
-    express: app
+  autoescape: true,
+  express: app,
 });
 app.set('view engine', 'nunjucks');
 
@@ -51,11 +55,11 @@ app.use(session({
   secret: process.env.COOKIE_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: {maxAge: 30 * 60 * 1000} // 30 minutes
+  cookie: { maxAge: 30 * 60 * 1000 }, // 30 minutes
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(`${__dirname}/public/favicon.ico`));
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -75,22 +79,22 @@ app.use((req, res, next) => {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use((err, req, res, next) => {
+  app.use((err, req, res) => {
     res.status(err.status || 500);
     res.render('error.html', {
       message: err.message,
-      error: err
+      error: err,
     });
   });
 }
 
 // production error handler
 // no stacktraces leaked to user
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   res.status(err.status || 500);
   res.render('error.html', {
     message: err.message,
-    error: {}
+    error: {},
   });
 });
 
