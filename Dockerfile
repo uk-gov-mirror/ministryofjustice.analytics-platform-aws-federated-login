@@ -9,8 +9,10 @@ ENV EXPRESS_HOST "0.0.0.0"
 
 WORKDIR /home/app
 
-ADD package.json package.json
-RUN npm install
+RUN apk add --no-cache yarn
+
+ADD package.json yarn.lock ./
+RUN yarn install
 
 ADD . ./
 
