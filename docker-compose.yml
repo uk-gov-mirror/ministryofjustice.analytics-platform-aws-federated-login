@@ -1,0 +1,12 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      PORT: "3000"
+      COOKIE_SECRET: "8A55A33B-5605-44F5-9A96-E2F9B6D626D0"
+      PLATFORM_ENV: "dev"
