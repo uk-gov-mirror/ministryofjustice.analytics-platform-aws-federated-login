@@ -20,20 +20,25 @@ router.get('/', ensureLoggedIn('/login'), (req, res) => {
   });
 });
 
-router.get('/login', (req, res) => {
-  res.render('login.html', {
-    AUTH0_DOMAIN: process.env.AUTH0_DOMAIN,
-    AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
-    AUTH0_CALLBACK_URL: process.env.AUTH0_CALLBACK_URL ||
-                        'http://localhost:3000/callback',
-  });
+router.get('/login', (req, res, next) => {
+  if (req.isAuthenticated()) {
+    if (/^http/.test(req.session.returnTo)) {
+      return res.send(400, "URL must be relative");
+    }
+    res.redirect(req.session.returnTo);
+  } else {
+    passport.authenticate('auth0-oidc', {
+      state: req.session.returnTo,
+    })(req, res, next);
+  }
+
 });
 
 router.get(
   '/callback',
   passport.authenticate('auth0-oidc', { failureRedirect: '/login' }),
   (req, res) => {
-    res.redirect(req.session.returnTo || '/');
+    res.redirect(req.query.state || '/');
   },
 );
 
