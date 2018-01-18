@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const { ensureLoggedIn } = require('connect-ensure-login');
+const uuidv4 = require('uuid/v4');
 const AWSFederatedLogin = require('../aws-federation');
 
 router.get('/', ensureLoggedIn('/login'), (req, res) => {
@@ -20,13 +21,18 @@ router.get('/', ensureLoggedIn('/login'), (req, res) => {
   });
 });
 
-router.get('/login', (req, res) => {
-  res.render('login.html', {
-    AUTH0_DOMAIN: process.env.AUTH0_DOMAIN,
-    AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
-    AUTH0_CALLBACK_URL: process.env.AUTH0_CALLBACK_URL ||
-                        'http://localhost:3000/callback',
-  });
+router.get('/login', (req, res, next) => {
+  if (req.isAuthenticated()) {
+    if (/^http/.test(req.session.returnTo)) {
+      res.send(400, 'URL must be relative');
+    } else {
+      res.redirect(req.session.returnTo);
+    }
+  } else {
+    passport.authenticate('auth0-oidc', {
+      state: uuidv4(),
+    })(req, res, next);
+  }
 });
 
 router.get(
