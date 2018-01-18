@@ -23,15 +23,15 @@ router.get('/', ensureLoggedIn('/login'), (req, res) => {
 router.get('/login', (req, res, next) => {
   if (req.isAuthenticated()) {
     if (/^http/.test(req.session.returnTo)) {
-      return res.send(400, "URL must be relative");
+      res.send(400, 'URL must be relative');
+    } else {
+      res.redirect(req.session.returnTo);
     }
-    res.redirect(req.session.returnTo);
   } else {
     passport.authenticate('auth0-oidc', {
       state: req.session.returnTo,
     })(req, res, next);
   }
-
 });
 
 router.get(
