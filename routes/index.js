@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const { ensureLoggedIn } = require('connect-ensure-login');
+const uuidv4 = require('uuid/v4');
 const AWSFederatedLogin = require('../aws-federation');
 
 router.get('/', ensureLoggedIn('/login'), (req, res) => {
@@ -29,7 +30,7 @@ router.get('/login', (req, res, next) => {
     }
   } else {
     passport.authenticate('auth0-oidc', {
-      state: req.session.returnTo,
+      state: uuidv4(),
     })(req, res, next);
   }
 });
@@ -38,7 +39,7 @@ router.get(
   '/callback',
   passport.authenticate('auth0-oidc', { failureRedirect: '/login' }),
   (req, res) => {
-    res.redirect(req.query.state || '/');
+    res.redirect(req.session.returnTo || '/');
   },
 );
 
