@@ -30,6 +30,7 @@ router.get('/login', (req, res, next) => {
     }
   } else {
     passport.authenticate('auth0-oidc', {
+      prompt: req.query.prompt || 'none',
       state: uuidv4(),
     })(req, res, next);
   }
@@ -37,7 +38,7 @@ router.get('/login', (req, res, next) => {
 
 router.get(
   '/callback',
-  passport.authenticate('auth0-oidc', { failureRedirect: '/login' }),
+  passport.authenticate('auth0-oidc', { failureRedirect: '/login?prompt=true' }),
   (req, res) => {
     res.redirect(req.session.returnTo || '/');
   },
