@@ -19,7 +19,7 @@
     "nunjucks": "^3.1.2",
     "passport": "^0.4.0",
     "passport-auth0-openidconnect": "^0.1.1",
-    "request": "^2.83.0",
+    "request": "^2.85.0",
     "request-promise-native": "^1.0.5",
     "serve-favicon": "^2.4.5",
     "uuid": "^3.2.1"
