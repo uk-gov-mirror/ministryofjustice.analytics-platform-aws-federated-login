@@ -5,6 +5,7 @@ const passport = require('passport');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const uuidv4 = require('uuid/v4');
 const AWSFederatedLogin = require('../aws-federation');
+const { URL } = require('url');
 
 router.get('/', ensureLoggedIn('/login'), (req, res) => {
   const aws = new AWSFederatedLogin({
@@ -15,8 +16,12 @@ router.get('/', ensureLoggedIn('/login'), (req, res) => {
     jwt: req.session.id_token,
   });
 
-  const console_url = 'https://eu-west-1.console.aws.amazon.com/console/home?region=eu-west-1';
-  aws.console_url(console_url).then((url) => {
+  const destination = new URL(
+    req.query.destination || '/console/home?region=eu-west-1',
+    'https://console.aws.amazon.com',
+  );
+
+  aws.console_url(destination).then((url) => {
     res.redirect(url);
   });
 });
