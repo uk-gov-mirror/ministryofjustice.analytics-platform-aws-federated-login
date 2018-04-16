@@ -25,6 +25,8 @@ const strategy = new Auth0Strategy(
                  'http://localhost:3000/callback',
     scope: 'openid profile email',
     passReqToCallback: true,
+    prompt: 'none',
+    sso_logout_url: '/v2/logout',
   },
   ((
     req, issuer, audience, profile, accessToken,
@@ -34,6 +36,13 @@ const strategy = new Auth0Strategy(
     return callback(null, profile._json);
   }),
 );
+// Original implementation in `passport-openidconnect` ignore options by
+// returning `{}`.
+//
+// `passport-auth0-openidconnect` is supposed to override it but it doesn't.
+//
+// See: https://github.com/siacomuzzi/passport-openidconnect/blob/master/lib/strategy.js#L338
+Auth0Strategy.prototype.authorizationParams = (options) => options;
 passport.use(strategy);
 
 passport.serializeUser((user, done) => {
