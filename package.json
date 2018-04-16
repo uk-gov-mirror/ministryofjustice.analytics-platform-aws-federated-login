@@ -9,7 +9,7 @@
     "lint": "node node_modules/eslint/bin/eslint.js . || exit 0"
   },
   "dependencies": {
-    "aws-sdk": "^2.209.0",
+    "aws-sdk": "^2.224.1",
     "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "dotenv": "^5.0.1",
