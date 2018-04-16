@@ -1641,34 +1641,27 @@ parseurl@~1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/parseurl/-/parseurl-1.3.2.tgz#fc289d4ed8993119460c156253262cdc8de65bf3"
 
-passport-auth0-openidconnect@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/passport-auth0-openidconnect/-/passport-auth0-openidconnect-0.1.1.tgz#6e55cfcb58e81763e4689c9da261d54f34381a56"
+passport-auth0-openidconnect@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/passport-auth0-openidconnect/-/passport-auth0-openidconnect-0.2.0.tgz#4e6d0f12595b0316b46ad76a8f211cb7b3d487dc"
   dependencies:
-    passport-openidconnect "https://github.com/siacomuzzi/passport-openidconnect/tarball/state_store"
+    passport-openidconnect "0.0.2"
     pkginfo "^0.3.1"
     request "^2.65.0"
     xtend "^4.0.0"
 
-"passport-openidconnect@https://github.com/siacomuzzi/passport-openidconnect/tarball/state_store":
-  version "0.0.1"
-  resolved "https://github.com/siacomuzzi/passport-openidconnect/tarball/state_store#3eb50bedd8a50c4afb5cc823bfd70db0b25d46e6"
+passport-openidconnect@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/passport-openidconnect/-/passport-openidconnect-0.0.2.tgz#e488f8bdb386c9a9fd39c91d5ab8c880156e8153"
   dependencies:
     oauth "0.9.x"
-    passport "0.3.x"
-    pkginfo "0.2.x"
-    webfinger "0.3.x"
+    passport-strategy "1.x.x"
+    request "^2.75.0"
+    webfinger "0.4.x"
 
 passport-strategy@1.x.x:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
-
-passport@0.3.x:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/passport/-/passport-0.3.2.tgz#9dd009f915e8fe095b0124a01b8f82da07510102"
-  dependencies:
-    passport-strategy "1.x.x"
-    pause "0.0.1"
 
 passport@^0.4.0:
   version "0.4.0"
@@ -1740,10 +1733,6 @@ pkg-dir@^1.0.0:
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-1.0.0.tgz#7a4b508a8d5bb2d629d447056ff4e9c9314cf3d4"
   dependencies:
     find-up "^1.0.0"
-
-pkginfo@0.2.x:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/pkginfo/-/pkginfo-0.2.3.tgz#7239c42a5ef6c30b8f328439d9b9ff71042490f8"
 
 pkginfo@^0.3.1:
   version "0.3.1"
@@ -1932,7 +1921,7 @@ request@2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
-request@^2.65.0, request@^2.85.0:
+request@^2.65.0, request@^2.75.0, request@^2.85.0:
   version "2.85.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.85.0.tgz#5a03615a47c61420b3eb99b7dba204f83603e1fa"
   dependencies:
@@ -2344,9 +2333,9 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-webfinger@0.3.x:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/webfinger/-/webfinger-0.3.2.tgz#e602a0fa2034badc13ab44cbaffdfe1ae9b89b2f"
+webfinger@0.4.x:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/webfinger/-/webfinger-0.4.2.tgz#3477a6d97799461896039fcffc650b73468ee76d"
   dependencies:
     step "0.0.x"
     xml2js "0.1.x"
