@@ -54,4 +54,8 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
+router.get('/healthz', (req, res) => {
+  res.status(200).send("😬👍");
+});
+
 module.exports = router;

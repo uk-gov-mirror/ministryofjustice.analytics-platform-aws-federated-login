@@ -11,9 +11,17 @@ const session = require('express-session');
 const { join } = require('path');
 const Auth0Strategy = require('passport-auth0-openidconnect').Strategy;
 const routes = require('./routes/index');
+const RedisStore = require('connect-redis')(session);
+const bole = require('bole');
 
 const app = express();
 
+bole.output({
+  stream: process.stdout,
+  level: process.env.NODE_LOG_LEVEL || 'debug',
+});
+
+const redisLogger = bole('redis');
 
 // Passport setup
 const strategy = new Auth0Strategy(
@@ -60,8 +68,15 @@ nunjucks.configure(join(__dirname, 'templates'), {
 });
 app.set('view engine', 'nunjucks');
 
+app.use(logger(app.get('env') === 'development' ? 'dev' : 'combined'));
 app.use(cookieParser());
 app.use(session({
+  store: new RedisStore({
+    host: process.env.REDIS_HOST || 'redis',
+    port: 6379,
+    pass: process.env.REDIS_PASSWORD,
+    logErrors: redisLogger.error,
+  }),
   secret: process.env.COOKIE_SECRET,
   resave: false,
   saveUninitialized: false,
@@ -70,7 +85,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(favicon(`${__dirname}/public/favicon.ico`));
-app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
