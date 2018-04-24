@@ -11,7 +11,7 @@ router.get('/', ensureLoggedIn('/login'), (req, res) => {
   const aws = new AWSFederatedLogin({
     aws_account_id: process.env.AWS_ACCOUNT_ID,
     login_url: `https://${process.env.AUTH0_DOMAIN}/login`,
-    role_name: `${process.env.PLATFORM_ENV}_user_${req.user.nickname}`,
+    role_name: `${process.env.ENV}_user_${req.user.nickname}`,
     session_name: req.user.nickname,
     jwt: req.session.id_token,
   });
