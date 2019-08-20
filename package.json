@@ -22,7 +22,7 @@
     "passport": "^0.4.0",
     "passport-auth0-openidconnect": "^0.2.0",
     "request": "^2.85.0",
-    "request-promise-native": "^1.0.5",
+    "request-promise-native": "^1.0.7",
     "serve-favicon": "^2.5.0",
     "uuid": "^3.3.2"
   },
