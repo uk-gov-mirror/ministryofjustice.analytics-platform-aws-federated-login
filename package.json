@@ -19,7 +19,7 @@
     "express-session": "^1.16.2",
     "morgan": "^1.9.1",
     "nunjucks": "^3.2.0",
-    "passport": "^0.4.0",
+    "passport": "^0.4.1",
     "passport-auth0-openidconnect": "^0.2.0",
     "request": "^2.85.0",
     "request-promise-native": "^1.0.7",
