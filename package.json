@@ -24,7 +24,7 @@
     "request": "^2.85.0",
     "request-promise-native": "^1.0.7",
     "serve-favicon": "^2.5.0",
-    "uuid": "^3.3.3"
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
     "eslint": "7.4.0",
