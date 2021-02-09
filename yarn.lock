@@ -427,9 +427,9 @@ connect-ensure-login@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/connect-ensure-login/-/connect-ensure-login-0.1.1.tgz#174dcc51243b9eac23f8d98215aeb6694e2e8a12"
 
-connect-redis@^4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/connect-redis/-/connect-redis-4.0.4.tgz#b194abe2f3754551f38086e1a28cb9e68d6c3b28"
+connect-redis@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/connect-redis/-/connect-redis-5.1.0.tgz#bcef59e6fa882377a66398f46f674051a96bcc0b"
 
 console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
